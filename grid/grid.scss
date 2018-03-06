@@ -1,0 +1,56 @@
+$device-type: xs,sm,md,lg;
+$num:12;
+$screen-xs-max:768px;
+$screen-sm-min:768px;
+$screen-sm-max:992px;
+$screen-md-min:992px;
+$screen-md-max:1200px;
+$screen-lg-min:1200px;
+.row{
+	float:left;
+	width:100%;
+  &:after{
+    content:"";
+    clear:both;
+    *zoom:1;
+    _height:1px;
+  }
+}
+[class*="col-"]{
+	float:left
+}
+
+/*生成n份的宽度*/
+@mixin calcWidth($num,$type){
+	@for $i from 1 through $num{
+		.col-#{$type}-#{$i}{
+			width: $i/$num*100%
+		}
+	}
+}
+
+
+
+@each $type in $device-type{
+	/*媒体查询代码生成片段*/
+	@if $type == xs{
+		@media (max-width: $screen-xs-max) { 
+			@include calcWidth($num,$type)
+		}  
+
+	}@else if $type == sm{
+		@media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) { 
+			@include calcWidth($num,$type)
+		}  
+
+	}@else if $type == md{
+		@media (min-width: $screen-md-min) and (max-width: $screen-md-max) { 
+			@include calcWidth($num,$type)
+		}  
+	}@else{
+		@media (min-width: $screen-lg-min) { 
+			@include calcWidth($num,$type)
+		}  
+	}
+		
+}
